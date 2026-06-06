@@ -1,0 +1,61 @@
+# =============================================================================
+# Global Defaults — Synthetic Medical Imaging Generator
+# =============================================================================
+
+project:
+  name: synthetic-med-imaging
+  version: "2.0.0"
+
+# Hardware
+device: cuda           # cuda | cpu
+seed: 42
+deterministic: true
+
+# Paths
+paths:
+  data_dir: ./data/raw
+  processed_dir: ./data/processed
+  splits_dir: ./data/splits
+  output_dir: ./outputs
+  adapter_dir: ./adapters
+  config_dir: ./configs
+
+# Logging
+logging:
+  level: INFO           # DEBUG | INFO | WARNING | ERROR
+  backend: mlflow       # mlflow | wandb | tensorboard | none
+  mlflow_uri: ./mlruns
+
+# Generation defaults
+generation:
+  batch_size: 1
+  num_workers: 4
+  fp16: true
+  gradient_checkpointing: true
+  use_8bit_optimizer: true
+
+# Quality control
+quality:
+  fid_target: 30.0
+  ssim_target: 0.70
+  ms_ssim_target: 0.75
+  anatomy_validity_rate: 0.90
+  classifier_confidence_min: 0.60
+  max_regeneration_retries: 3
+
+# Watermarking
+watermark:
+  enabled: true
+  method: tree_ring
+  radius: 10
+
+# Export
+export:
+  default_format: dicom
+  split_ratios:
+    train: 0.70
+    val: 0.15
+    test: 0.15
+  generate_reports: true
+  generate_heatmaps: true
+  generate_masks: true

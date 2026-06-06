@@ -1,0 +1,35 @@
+# =============================================================================
+# LoRA Training Config — Ultrasound (SD 2.1 on EchoNet + BUSI + TN3K)
+# =============================================================================
+
+experiment_name: ultrasound_lora
+
+model:
+  backbone: stabilityai/stable-diffusion-2-1
+  lora:
+    rank: 16
+    alpha: 32
+    target_modules: [to_q, to_k, to_v, to_out.0]
+    dropout: 0.1
+    bias: none
+
+training:
+  epochs: 40
+  batch_size: 8
+  learning_rate: 1.0e-4
+  fp16: true
+  gradient_checkpointing: true
+  use_8bit_adam: true
+  seed: 42
+
+data:
+  datasets: [echonet_dynamic, busi, tn3k]
+  image_size: 256
+  num_workers: 4
+
+speckle_aware:
+  apply_speckle_augmentation: true
+  sigma_range: [0.15, 0.45]
+
+cfg:
+  unconditional_dropout: 0.10

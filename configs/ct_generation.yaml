@@ -1,0 +1,91 @@
+# =============================================================================
+# CT Generation Configuration
+# =============================================================================
+
+modality: ct
+modality_code: CT
+
+# VQVAE
+vqvae:
+  backbone: MONAI/AutoencoderKL
+  spatial_dims: 2
+  in_channels: 1
+  out_channels: 1
+  num_channels: [128, 256, 512]
+  latent_channels: 4
+  num_res_blocks: 2
+  norm_num_groups: 32
+  attention_levels: [false, false, true]
+  compression_factor: 8   # 256×256 → 32×32
+
+# LDM (2.5D slice-conditioned)
+ldm:
+  backbone: MONAI/DiffusionModelUNet
+  spatial_dims: 2
+  in_channels: 12          # 4 (target) + 4 (above) + 4 (below)
+  out_channels: 4
+  num_channels: [128, 256, 512]
+  attention_levels: [false, true, true]
+  num_head_channels: [0, 256, 512]
+  num_res_blocks: 2
+  with_conditioning: true
+  cross_attention_dim: 768
+
+adapter_path: adapters/ct_lora.pt
+
+# Generation
+resolution: [256, 256]
+diffusion_steps: 50
+sampler: ddim
+cfg_scale: 7.5
+cfg_scale_strong: 10.0
+lora_rank: 8
+lora_alpha: 16
+
+# VRAM
+estimated_vram_vqvae_training_gb: 3.2
+estimated_vram_ldm_training_gb: 4.1
+estimated_vram_inference_gb: 4.5
+batch_size_training: 2
+batch_size_inference: 2
+
+# HU Window presets
+hu_windows:
+  lung:
+    a_min: -1350
+    a_max: 150
+  soft_tissue:
+    a_min: -135
+    a_max: 215
+  brain:
+    a_min: 0
+    a_max: 80
+  bone:
+    a_min: -500
+    a_max: 1500
+  liver:
+    a_min: -25
+    a_max: 230
+
+# Spacing normalization
+spacing:
+  pixdim: [1.5, 1.5, 2.0]
+  mode_image: bilinear
+  mode_label: nearest
+
+# Noise model
+noise:
+  type: poisson
+  dose_factor: 1.0
+
+# Training data
+datasets:
+  - lidc_idri
+  - msd
+  - totalsegmentator
+
+# Auto-regressive inference
+inference:
+  method: autoregressive_2.5d
+  context_slices: 2    # above + below
+  max_slices_per_volume: 128

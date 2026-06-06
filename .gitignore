@@ -1,0 +1,56 @@
+# =============================================================================
+# Git Ignore — Synthetic Medical Imaging Generator
+# =============================================================================
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Environment
+.env
+.venv/
+venv/
+env/
+
+# Data (large files — download separately)
+data/raw/
+data/processed/
+
+# Model weights (large, trained separately)
+adapters/
+*.pt
+*.pth
+*.safetensors
+*.ckpt
+*.bin
+
+# Generated outputs
+outputs/
+
+# Experiment tracking
+mlruns/
+wandb/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Temporary
+*.tmp
+*.log

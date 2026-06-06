@@ -1,0 +1,13 @@
+{
+  "body_parts": [
+    "chest", "brain", "abdomen", "spine", "breast",
+    "cardiac", "msk", "pelvis", "neck", "vascular"
+  ],
+  "planes": [
+    "axial", "coronal", "sagittal", "pa", "ap", "lateral",
+    "cc", "mlo"
+  ],
+  "laterality": [
+    "left", "right", "bilateral", "na"
+  ]
+}

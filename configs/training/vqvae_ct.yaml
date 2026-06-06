@@ -1,0 +1,41 @@
+# =============================================================================
+# VQVAE Training Config — CT (MONAI AutoencoderKL on LIDC-IDRI)
+# =============================================================================
+
+experiment_name: ct_vqvae_lidc
+
+model:
+  type: AutoencoderKL
+  spatial_dims: 2
+  in_channels: 1
+  out_channels: 1
+  num_channels: [128, 256, 512]
+  latent_channels: 4
+  num_res_blocks: 2
+  norm_num_groups: 32
+  attention_levels: [false, false, true]
+
+training:
+  epochs: 100
+  batch_size: 8
+  learning_rate: 1.0e-4
+  weight_decay: 0.01
+  fp16: true
+  gradient_checkpointing: true
+  use_8bit_adam: true
+  seed: 42
+
+loss:
+  reconstruction_weight: 1.0
+  kl_weight: 1.0e-6
+  perceptual_weight: 0.001
+
+data:
+  dataset: lidc_idri
+  image_size: 256
+  hu_window: lung          # lung | soft_tissue | brain
+  num_workers: 4
+
+scheduler:
+  type: cosine
+  num_cycles: 1

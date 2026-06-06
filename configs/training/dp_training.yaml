@@ -1,0 +1,20 @@
+# =============================================================================
+# Differential Privacy Training Config [NEW v2.0]
+# =============================================================================
+
+experiment_name: dp_lora_finetuning
+
+# Opacus DP-SGD settings
+differential_privacy:
+  enabled: false               # Enable for privacy-sensitive training
+  target_epsilon: 8.0          # Privacy budget
+  target_delta: null           # Defaults to 1/N (N = dataset size)
+  noise_multiplier: 1.0        # Higher = more private, worse quality
+  max_grad_norm: 1.0           # Per-sample gradient clipping
+
+# Notes:
+# - DP-SGD adds noise to gradients during training
+# - Combined with LoRA, only adapter gradients are clipped/noised
+# - Quality degrades with stronger privacy (lower epsilon)
+# - Recommended: epsilon=8 as a balance between privacy and utility
+# - Run membership_inference.py first to check if DP is even needed

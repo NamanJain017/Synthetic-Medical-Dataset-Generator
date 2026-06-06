@@ -1,0 +1,39 @@
+# =============================================================================
+# LoRA Training Config — Mammography (SD 2.1 on CBIS-DDSM + VinDr-Mammo)
+# =============================================================================
+
+experiment_name: mammography_lora
+
+model:
+  backbone: stabilityai/stable-diffusion-2-1
+  lora:
+    rank: 16
+    alpha: 32
+    target_modules: [to_q, to_k, to_v, to_out.0]
+    dropout: 0.1
+    bias: none
+
+training:
+  epochs: 50
+  batch_size: 4
+  learning_rate: 1.0e-4
+  fp16: true
+  gradient_checkpointing: true
+  use_8bit_adam: true
+  seed: 42
+
+data:
+  datasets: [cbis_ddsm, vindr_mammo]
+  image_size: 512
+  num_workers: 4
+
+view_conditioning:
+  generate_paired: true     # Train on CC + MLO pairs
+  view_dropout: 0.05        # Occasionally drop view conditioning
+
+birads_conditioning:
+  density_dropout: 0.10
+  score_dropout: 0.10
+
+cfg:
+  unconditional_dropout: 0.10

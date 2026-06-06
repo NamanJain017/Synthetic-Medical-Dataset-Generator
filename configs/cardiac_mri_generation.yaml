@@ -1,0 +1,55 @@
+# =============================================================================
+# Cardiac MRI Generation Configuration [NEW v2.0]
+# =============================================================================
+
+modality: cardiac_mri
+modality_code: CMR
+
+# Model
+backbone: MONAI/generative_cardiac
+adapter_path: adapters/cardiac_lora.pt
+
+# Generation
+resolution: [256, 256]
+diffusion_steps: 40
+sampler: ddim
+cfg_scale: 7.0
+cfg_scale_strong: 9.0
+lora_rank: 16
+lora_alpha: 32
+
+# VRAM
+estimated_vram_training_gb: 4.2
+estimated_vram_inference_gb: 3.5
+batch_size_training: 2
+batch_size_inference: 2
+
+# Cine sequence
+cine:
+  frames_per_cycle: 30    # 25-50 typical
+  temporal_resolution_ms: 30
+  cardiac_phases:
+    systole_range: [0.0, 0.4]
+    diastole_range: [0.4, 1.0]
+
+# Sequences to support
+sequences:
+  - ssfp_cine      # Wall motion, EF calculation
+  - t1_mapping     # Fibrosis, edema
+  - t2_mapping     # Acute injury
+  - lge            # Late gadolinium enhancement — infarct/scar
+
+# Conditioning
+conditioning:
+  heart_rate_range: [50, 120]   # BPM
+  ef_range: [10, 75]            # Ejection fraction %
+
+# Noise model
+noise:
+  type: rician
+  snr: 25
+
+# Training data
+datasets:
+  - acdc
+  # - m_and_ms

@@ -1,0 +1,74 @@
+# =============================================================================
+# Mammography Generation Configuration [NEW v2.0]
+# =============================================================================
+
+modality: mammography
+modality_code: MG
+
+# Model
+backbone: stabilityai/stable-diffusion-2-1
+adapter_path: adapters/mammography_lora.pt
+
+# Generation
+resolution: [512, 512]
+diffusion_steps: 35
+sampler: ddim
+cfg_scale: 7.5
+cfg_scale_strong: 11.0
+lora_rank: 16
+lora_alpha: 32
+
+# VRAM
+estimated_vram_training_gb: 4.8
+estimated_vram_inference_gb: 3.8
+batch_size_training: 4
+batch_size_inference: 4
+
+# View conditioning
+view_tokens:
+  cc: 0    # Craniocaudal
+  mlo: 1   # Mediolateral oblique
+generate_paired_views: true   # Always generate both CC + MLO
+
+# ACR BIRADS density conditioning
+density_tokens:
+  A: 0   # Almost entirely fatty
+  B: 1   # Scattered fibroglandular
+  C: 2   # Heterogeneously dense
+  D: 3   # Extremely dense
+
+# BIRADS score conditioning (severity analogue for mammography)
+birads_scores:
+  1: 0.00   # Negative
+  2: 0.15   # Benign
+  3: 0.45   # Probably benign
+  4: 0.70   # Suspicious
+  5: 0.95   # Highly suspicious malignant
+  6: 1.00   # Known malignancy
+
+# Calcification injection
+calcification:
+  morphologies:
+    - amorphous
+    - coarse_heterogeneous
+    - fine_pleomorphic
+    - fine_linear
+    - coarse_popcorn
+  distributions:
+    - clustered
+    - linear
+    - segmental
+    - regional
+    - diffuse
+
+# Noise model
+noise:
+  type: poisson_scatter
+  quantum_factor: 250
+  scatter_fraction: 0.15
+
+# Training data
+datasets:
+  - cbis_ddsm
+  - vindr_mammo
+  - inbreast

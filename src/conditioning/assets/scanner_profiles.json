@@ -1,0 +1,20 @@
+{
+  "tokens": {
+    "siemens_1.5T": 0,
+    "siemens_3T": 1,
+    "ge_1.5T": 2,
+    "ge_3T": 3,
+    "philips_1.5T": 4,
+    "philips_3T": 5,
+    "generic": 6
+  },
+  "descriptions": {
+    "siemens_1.5T": "Siemens 1.5T MRI Scanner Profile",
+    "siemens_3T": "Siemens 3T MRI Scanner Profile",
+    "ge_1.5T": "GE 1.5T MRI Scanner Profile",
+    "ge_3T": "GE 3T MRI Scanner Profile",
+    "philips_1.5T": "Philips 1.5T MRI Scanner Profile",
+    "philips_3T": "Philips 3T MRI Scanner Profile",
+    "generic": "Vendor agnostic baseline profile"
+  }
+}

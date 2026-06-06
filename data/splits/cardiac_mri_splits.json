@@ -1,0 +1,16 @@
+{
+  "modality": "cardiac_mri",
+  "datasets": ["acdc"],
+  "total_images": 0,
+  "splits": {
+    "train": [],
+    "val": [],
+    "test": []
+  },
+  "metadata": {
+    "split_ratios": {"train": 0.70, "val": 0.15, "test": 0.15},
+    "stratify_keys": ["disease", "severity"],
+    "created_at": null,
+    "note": "Populate after downloading datasets and running preprocessing"
+  }
+}

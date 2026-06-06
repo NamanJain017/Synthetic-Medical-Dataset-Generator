@@ -1,0 +1,40 @@
+# =============================================================================
+# PET-CT Generation Configuration [NEW v2.0]
+# =============================================================================
+
+modality: pet_ct
+modality_code: PT
+
+# Uses CT module for anatomical component, then synthesizes PET overlay
+ct_backbone: MONAI/generative_ct
+pet_synthesis_model: conditional_diffusion
+adapter_path: adapters/pet_ct_lora.pt
+
+# Generation
+resolution: [256, 256]
+diffusion_steps: 50
+sampler: ddim
+cfg_scale: 7.5
+lora_rank: 8
+
+# VRAM
+estimated_vram_inference_gb: 4.5
+batch_size_inference: 1
+
+# PET-specific
+pet:
+  tracer: FDG                    # F-18 fluorodeoxyglucose
+  suv_range: [0, 20]             # Standardized uptake value
+  suv_background: 1.0            # Normal tissue baseline
+  suv_lesion_range: [3, 20]      # Malignant lesion range
+  resolution_mm: 4.0             # PET spatial resolution (lower than CT)
+  noise_model: poisson_scatter
+
+# Conditioning
+conditioning:
+  disease_staging: true          # TNM staging influences SUV pattern
+  metabolic_activity: [low, moderate, high, very_high]
+
+# Training data
+datasets:
+  - tcia_pet_ct

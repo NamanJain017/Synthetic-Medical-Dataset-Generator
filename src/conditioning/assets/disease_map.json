@@ -1,0 +1,47 @@
+{
+  "pneumonia": {
+    "snomed_id": "233604007",
+    "icd10": "J18.9",
+    "features": {
+      "consolidation": true,
+      "air_bronchogram": true,
+      "distribution": "lobar",
+      "location_bias": ["RLL","LLL"],
+      "pleural_effusion_prob": 0.30,
+      "bilateral_prob": 0.15,
+      "cavitation_prob": 0.05
+    },
+    "modality_notes": {
+      "xray": "Lobar opacification obscuring vascular markings, silhouette sign",
+      "ct": "Consolidation with air bronchograms, ground-glass halo, small effusion",
+      "us": "Sub-pleural consolidation with air bronchograms (shred sign)"
+    }
+  },
+  "glioma": {
+    "snomed_id": "363365008",
+    "icd10": "C71.9",
+    "features": {
+      "mass_effect": true,
+      "midline_shift_prob": 0.40,
+      "necrosis_prob": 0.50,
+      "edema": true
+    },
+    "modality_notes": {
+      "mri": "T1 hypointense, T2/FLAIR hyperintense with surrounding edema, ring enhancement on T1+C",
+      "ct": "Hypodense to isodense mass with surrounding vasogenic edema"
+    }
+  },
+  "fatty_liver": {
+    "snomed_id": "197321007",
+    "icd10": "K76.0",
+    "features": {
+      "diffuse_infiltration": true,
+      "hepatomegaly_prob": 0.60
+    },
+    "modality_notes": {
+      "us": "Increased echogenicity (bright liver), poor penetration of sound waves",
+      "ct": "Liver density lower than spleen on non-contrast CT (< 40 HU)",
+      "mri": "Signal drop on opposed-phase imaging"
+    }
+  }
+}

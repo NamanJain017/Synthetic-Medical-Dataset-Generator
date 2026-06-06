@@ -1,0 +1,63 @@
+# =============================================================================
+# MRI Generation Configuration
+# =============================================================================
+
+modality: mri
+modality_code: MR
+
+# SynthSeg
+synthseg:
+  atlas_path: null            # Set to FreeSurfer atlas path
+  use_freesurfer: true
+  freesurfer_home: null       # Set to FREESURFER_HOME
+
+# Contrast synthesis model
+contrast_model:
+  backbone: SynthSeg/label_to_image_v2
+  adapter_path: adapters/mri_lora.pt
+  type: conditional_diffusion  # conditional_diffusion | pix2pix_cgan
+
+# Contrast tokens
+contrast_tokens:
+  t1: 0      # WM bright, GM gray, CSF dark
+  t2: 1      # CSF bright, WM dark, lesions bright
+  flair: 2   # CSF suppressed, lesions bright
+  dwi: 3     # Acute infarct bright (restricted diffusion)
+  swi: 4     # Haemosiderin dark (microbleeds)
+  asl: 5     # Arterial spin labelling (perfusion)
+
+# Generation
+resolution: [256, 256]
+diffusion_steps: 40
+sampler: ddim
+cfg_scale: 6.0
+cfg_scale_strong: 9.0
+lora_rank: 16
+lora_alpha: 32
+
+# VRAM
+estimated_vram_inference_gb: 2.0
+batch_size_inference: 2
+
+# Noise model
+noise:
+  type: rician
+  snr: 20
+
+# Lesion injection
+lesions:
+  glioma:
+    edema_halo_mm: 10
+    necrotic_core: true    # For HGG
+  ms:
+    distribution: periventricular  # periventricular | cortical | infratentorial
+    count_range: [3, 20]
+  stroke:
+    territories: [mca, aca, pca]
+    acuity: [acute, subacute, chronic]
+
+# Training data
+datasets:
+  - brats2023
+  - adni
+  - ixi

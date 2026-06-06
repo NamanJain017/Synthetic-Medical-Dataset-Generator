@@ -1,0 +1,58 @@
+# =============================================================================
+# Ultrasound Generation Configuration [NEW v2.0]
+# =============================================================================
+
+modality: ultrasound
+modality_code: US
+
+# Model
+backbone: stabilityai/stable-diffusion-2-1
+adapter_path: adapters/ultrasound_lora.pt
+
+# Generation
+resolution: [256, 256]
+diffusion_steps: 30
+sampler: dpm++
+cfg_scale: 7.0
+cfg_scale_strong: 10.0
+lora_rank: 16
+lora_alpha: 32
+
+# VRAM
+estimated_vram_training_gb: 3.5
+estimated_vram_inference_gb: 2.8
+batch_size_training: 8
+batch_size_inference: 4
+
+# Probe conditioning
+probe_tokens:
+  linear: 0           # Vascular, MSK, breast, thyroid — rectangular FOV
+  curvilinear: 1       # Abdomen, pelvis, OB/GYN — fan-shaped FOV
+  phased_array: 2      # Cardiac, transcranial — sector FOV
+  endocavitary: 3      # Transvaginal, transrectal — wide-angle sector
+  linear_hockey: 4     # High-frequency vascular — small footprint
+
+# Speckle noise model (Rayleigh multiplicative — NOT Gaussian)
+noise:
+  type: rayleigh_speckle
+  sigma: 0.3
+  multiplicative: true
+
+# Ultrasound-specific preprocessing
+preprocessing:
+  log_compression_db: 60
+  tgc_min: 1.0
+  tgc_max: 2.5
+
+# Doppler settings
+doppler:
+  enabled: true
+  modes: [color, power, spectral]
+  velocity_range: [-0.5, 0.5]   # m/s for color Doppler
+
+# Training data
+datasets:
+  - echonet_dynamic
+  - busi
+  - tn3k
+  - pocus_atlas

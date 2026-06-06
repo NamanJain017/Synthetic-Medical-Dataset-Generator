@@ -1,0 +1,54 @@
+# =============================================================================
+# X-ray Generation Configuration
+# =============================================================================
+
+modality: xray
+modality_code: DXR
+
+# Model
+backbone: stabilityai/stable-diffusion-2-1
+adapter_path: adapters/xray_lora.pt
+controlnet_model: lllyasviel/control_v11p_sd21_openpose  # or custom anatomy model
+
+# Generation
+resolution: [512, 512]
+diffusion_steps: 30
+sampler: ddim
+cfg_scale: 7.5
+cfg_scale_strong: 12.0
+lora_rank: 16
+lora_alpha: 32
+lora_dropout: 0.1
+lora_target_modules:
+  - to_q
+  - to_k
+  - to_v
+  - to_out.0
+
+# VRAM
+estimated_vram_training_gb: 5.2
+estimated_vram_inference_gb: 3.8
+batch_size_training: 4
+batch_size_inference: 4
+
+# Noise model
+noise:
+  type: poisson_gaussian
+  quantum_factor: 200
+  electronic_std: 0.02
+
+# Conditioning
+conditioning:
+  cross_attention_dim: 768
+  use_controlnet: true
+  controlnet_conditioning: anatomy_segmentation
+
+# Training data
+datasets:
+  - chexpert
+  - mimic_cxr
+
+# Prompt template (MIMIC-CXR style)
+prompt_template: >
+  Chest radiograph, {view} view. {age}-year-old {sex}.
+  {disease_descriptor}. {location}. Severity: {severity}.
