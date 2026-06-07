@@ -78,6 +78,11 @@ async def run_generation(job_id: str, request: GenerationRequest):
         jobs[job_id].update({"status": "failed", "error": str(e)})
 
 
+@app.get("/health")
+async def health_check():
+    import torch
+    return {"status": "ok", "gpu_available": torch.cuda.is_available()}
+
 @app.post("/generate", response_model=JobStatus)
 async def generate(request: GenerationRequest, background_tasks: BackgroundTasks):
     job_id = str(uuid.uuid4())

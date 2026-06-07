@@ -12,7 +12,8 @@ class AutoRegressiveCTGenerator:
             spatial_dims=2,
             in_channels=12,     # 4 (target) + 4 (above) + 4 (below)
             out_channels=4,
-            num_channels=(128, 256, 512),
+            channels=(128, 256, 512),
+            num_res_blocks=2,
             attention_levels=(False, True, True),
             with_conditioning=True,
             cross_attention_dim=768,
